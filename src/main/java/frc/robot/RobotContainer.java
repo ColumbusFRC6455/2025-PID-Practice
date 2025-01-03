@@ -7,7 +7,6 @@ package frc.robot;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.DriveCommand;
-import frc.robot.commands.DriveForwardAuto;
 import frc.robot.commands.DriveForwardCmd;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.DriveSubsystem;
@@ -32,8 +31,8 @@ public class RobotContainer {
   public final static CommandXboxController m_driverController = new CommandXboxController(
       OperatorConstants.kDriverControllerPort);
   
-  Command autoDrive = new DriveForwardAuto(driveSubsystem, 10 * Constants.DRIVE_MOTORS.ConversionFactor, 24 * Constants.DRIVE_MOTORS.ConversionFactor);
-  Command autoDrive2 = new DriveForwardAuto(driveSubsystem, 5 * Constants.DRIVE_MOTORS.ConversionFactor, 12 * Constants.DRIVE_MOTORS.ConversionFactor);
+  Command autoDrive = new SequentialCommandGroup(new DriveForwardCmd(driveSubsystem, 10 * Constants.DRIVE_MOTORS.ConversionFactor), new DriveForwardCmd(driveSubsystem, 24 * Constants.DRIVE_MOTORS.ConversionFactor));
+  Command autoDrive2 = new SequentialCommandGroup(new DriveForwardCmd(driveSubsystem, 5 * Constants.DRIVE_MOTORS.ConversionFactor), new DriveForwardCmd(driveSubsystem, 10 * Constants.DRIVE_MOTORS.ConversionFactor));
   SendableChooser<Command> autoChooser = new SendableChooser<>();
 
   
@@ -64,6 +63,6 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return new SequentialCommandGroup(new DriveForwardCmd(driveSubsystem, 10 * Constants.DRIVE_MOTORS.ConversionFactor), new DriveForwardCmd(driveSubsystem, 24 * Constants.DRIVE_MOTORS.ConversionFactor));
+    return autoChooser.getSelected();
   }
 }

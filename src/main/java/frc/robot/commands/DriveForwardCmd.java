@@ -18,7 +18,7 @@ public class DriveForwardCmd extends Command {
     this.setpoint = setpoint;
     this.pidController = new PIDController(PID.kP, PID.kI, PID.kD);
     pidController.setSetpoint(setpoint);
-    pidController.setTolerance(2.23);
+    pidController.setTolerance(10);
     addRequirements(driveSubsystem);
   }
 
